@@ -1,47 +1,36 @@
 package com.dynamicintel;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Random;
+import com.dynamicintel.Main.MatrixFactory;
 
 public class Task1 {
     public static void main(String[] args) {
+
         int size = 1000;
-        int[][] matrixA = new int[size][size];
-        int[][] matrixB = new int[size][size];
-        int[][] matrixC = new int[size][size];
-        int[][] matrixD = new int[size][size];
+        MatrixFactory factory = new MatrixFactory(1234); // Factory pattern to produce matrices
+        int[][] matrixA = factory.createRandomMatrix(size, size);
+        int[][] matrixB = factory.createRandomMatrix(size, size);
+        int[][] matrixC = factory.createRandomMatrix(size, size);
+        int[][] matrixD = factory.createRandomMatrix(size, size);
 
-        Random random = new Random();
-        for (int i = 0; i < size; i++) { // Initialize the matrices A and B to random values
-            for (int j = 0; j < size; j++) {
-                matrixA[i][j] = random.nextInt();
-                matrixB[i][j] = random.nextInt();
-                matrixC[i][j] = random.nextInt();
-                matrixD[i][j] = random.nextInt();
-            }
-        }
-
-        writeToFile(matrixA, "matrixA_raw.txt");
-        writeToFile(matrixB, "matrixB_raw.txt");
-        writeToFile(matrixC, "matrixC_raw.txt");
-        writeToFile(matrixD, "matrixD_raw.txt");
+        Main.writeToFile(matrixA, "matrixA_task1.txt"); // Write to file using the method in Main
+        Main.writeToFile(matrixB, "matrixB_task1.txt");
+        Main.writeToFile(matrixC, "matrixC_task1.txt");
+        Main.writeToFile(matrixD, "matrixD_task1.txt");
 
         int[][] matrixAB = multiply(matrixA, matrixB);
 
-        writeToFile(matrixAB, "matrixAB_multiplied.txt");
+        Main.writeToFile(matrixAB, "matrixAB_task1.txt");
 
         int[][] matrixABC = multiply(matrixAB, matrixC);
 
-        writeToFile(matrixABC, "matrixABC_multiplied.txt");
+        Main.writeToFile(matrixABC, "matrixABC_task1.txt");
 
         int[][] matrixABCD = multiply(matrixABC, matrixD);
 
-        writeToFile(matrixABCD, "matrixABCD_multiplied.txt");
+        Main.writeToFile(matrixABCD, "matrixABCD_task1.txt");
     }
 
-    public static int[][] multiply(int[][] matrixA, int[][] matrixB) {
+    public static int[][] multiply(int[][] matrixA, int[][] matrixB) { // multiply two matrices
         int size = matrixA.length;
 
         int[][] resultMatrix = new int[size][size];
@@ -53,18 +42,5 @@ public class Task1 {
             }
         }
         return resultMatrix;
-    }
-
-    public static void writeToFile(int[][] matrix, String filename) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (int i = 0; i < matrix.length; i++) {
-                for (int j = 0; j < matrix[i].length; j++) {
-                    writer.write(matrix[i][j] + ",");
-                }
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
